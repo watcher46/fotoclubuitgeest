@@ -1,0 +1,8 @@
+build/
+db/
+node_modules/
+vendor/
+.dockerignore
+.git*
+docker-compose.yml
+Makefile

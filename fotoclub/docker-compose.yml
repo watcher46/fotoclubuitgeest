@@ -1,0 +1,44 @@
+version: "3.3"
+
+services:
+  fotoclub:
+    depends_on:
+      - db
+    links:
+      - db
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - COMPOSER_AUTH=${COMPOSER_AUTH}
+    image: fotoclubuitgeest:${APP_VERSION:-latest}
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - APP_ENV=production
+    volumes:
+      - .:/var/www/html
+      - ./.docker/.certs:/var/www/certs
+  db:
+    image: mysql:5.6
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: testjes
+      MYSQL_DATABASE: fotoclub
+      MYSQL_USER: test
+      MYSQL_PASSWORD: testjes
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+volumes:
+  db_data: {}
