@@ -1,4 +1,4 @@
-FROM composer:1.7 AS composer
+FROM composer:latest AS composer
 
 #generate certificates
 FROM frapsoft/openssl:latest as openssl
@@ -12,7 +12,7 @@ RUN mkdir -p /export; \
         -keyout /export/server.key -out /export/server.crt
 
 #install php & extensions
-FROM php:7.2-apache
+FROM php:7.3-apache
 LABEL maintainer="watcher46@gmail.com"
 
 RUN apt-get update -y && \
