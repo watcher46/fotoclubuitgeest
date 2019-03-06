@@ -1,8 +1,24 @@
 easy_admin:
     entities:
-        # List the entity class name you want to manage
-        - App\Entity\Galerij
-        - App\Entity\Images
-        - App\Entity\Items
-        - App\Entity\Leden
-        - App\Entity\Users
+        Gallery:
+            class: App\Entity\Gallery
+            list:
+                fields:
+                    - 'id'
+                    - 'name'
+                    - 'description'
+                    - 'member.name'
+            edit:
+                fields:
+                    - 'name'
+                    - 'description'
+                    - 'active'
+                    - 'member'
+                    - 'dateCreated'
+                    - 'dateChanged'
+                    - 'images'
+
+        Image:
+            class: App\Entity\Image
+        Member:
+            class: App\Entity\Member
