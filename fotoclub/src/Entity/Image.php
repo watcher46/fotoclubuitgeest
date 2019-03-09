@@ -48,6 +48,12 @@ class Image
      */
     private $fileName;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Member", inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $member;
+
     public function __construct()
     {
         $this->competitionGalleries = new ArrayCollection();
@@ -147,6 +153,18 @@ class Image
     public function setFileName(string $fileName): self
     {
         $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(?Member $member): self
+    {
+        $this->member = $member;
 
         return $this;
     }

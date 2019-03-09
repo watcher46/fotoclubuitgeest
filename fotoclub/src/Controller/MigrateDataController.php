@@ -64,6 +64,7 @@ class MigrateDataController extends AbstractController
                     $newImage->setFileName($image['file_name']);
                     $newImage->setDateCreated(new \DateTime($image['date_created']));
                     $newImage->setActive(true);
+                    $newImage->setMember($newMember);
 
                     $entityManager->persist($newImage);
 
@@ -89,9 +90,6 @@ class MigrateDataController extends AbstractController
     {
         $membersWithGalleries = [];
         foreach ($result as $row) {
-            if($row['lid_nr'] != '911048') {
-                continue;
-            }
 
             $galIds = array_keys($membersWithGalleries);
 
