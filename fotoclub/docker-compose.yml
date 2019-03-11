@@ -17,7 +17,7 @@ services:
       - 80:80
       - 443:443
     environment:
-      - APP_ENV=production
+      - APP_ENV=dev
     volumes:
       - .:/var/www/html
       - ./.docker/.certs:/var/www/certs
