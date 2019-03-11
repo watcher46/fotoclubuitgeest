@@ -17,7 +17,12 @@ easy_admin:
                     - 'dateCreated'
                     - 'dateChanged'
                     - 'images'
-
+        CompetitionGallery:
+            class: App\Entity\CompetitionGallery
+            edit:
+                fields:
+                    - {property: 'images', sortable: true}
+                sort: ['images.sort_order', 'ASC']
         Image:
             class: App\Entity\Image
         Member:
