@@ -47,4 +47,34 @@ class GalleryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneWithSortedImages(int $id, string $sort): ?Gallery
+    {
+        return $this->createQueryBuilder('g')
+            ->select('g', 'i')
+            ->leftJoin('g.images', 'i')
+            ->andWhere('g.id = :id')
+            ->andWhere('g.active = :active')
+            ->orderBy('i.sortOrder', $sort)
+            ->setParameter('id', $id)
+            ->setParameter('active', true)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findOneWithSortedImagesByDate(int $id, string $sort): ?Gallery
+    {
+        return $this->createQueryBuilder('g')
+            ->select('g', 'i')
+            ->leftJoin('g.images', 'i')
+            ->andWhere('g.id = :id')
+            ->andWhere('g.active = :active')
+            ->orderBy('i.dateCreated', $sort)
+            ->setParameter('id', $id)
+            ->setParameter('active', true)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }
