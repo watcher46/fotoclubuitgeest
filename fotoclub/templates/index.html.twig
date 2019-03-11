@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+
+    <div class="warning">
+        <h1>Hallo</h1>
+            {% for image in gallery.images %}
+                <img src="/assets/images/galerij/{{ image.filename|replace({'.jpg': '_242x161.jpg'}) }}" />
+            {% endfor %}
+    </div>
+{% endblock %}
