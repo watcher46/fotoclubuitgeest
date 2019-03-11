@@ -34,11 +34,6 @@ class CompetitionGallery
     private $dateCreated;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $sortOrder;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="competitionGalleries")
      */
     private $images;
@@ -85,18 +80,6 @@ class CompetitionGallery
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
-
-        return $this;
-    }
-
-    public function getSortOrder(): ?int
-    {
-        return $this->sortOrder;
-    }
-
-    public function setSortOrder(int $sortOrder): self
-    {
-        $this->sortOrder = $sortOrder;
 
         return $this;
     }

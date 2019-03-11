@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CompetitionGallery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Member;
@@ -15,6 +16,7 @@ class MigrateDataController extends AbstractController
      */
     public function index()
     {
+        die('only run this on migration-day');
         $entityManager = $this->getDoctrine()->getManager();
 
         /** @var \Doctrine\DBAL\Connection $connection */
@@ -48,16 +50,25 @@ class MigrateDataController extends AbstractController
 
                 $oldGallery = $galleries[$galleryId];
 
-                $newGallery = new Gallery();
-                $newGallery->setName($oldGallery['name']);
-                $newGallery->setDescription($oldGallery['description']);
-                $newGallery->setDateCreated(new \DateTime($oldGallery['date_created']));
-                $newGallery->setDateChanged(new \DateTime($oldGallery['date_changed']));
-                $newGallery->setActive($oldGallery['active']);
-                $newGallery->setMember($newMember);
+                if ($oldGallery['type'] == '4') {
+                    $newGallery = new Gallery();
+                    $newGallery->setName($oldGallery['name']);
+                    $newGallery->setDescription($oldGallery['description']);
+                    $newGallery->setDateCreated(new \DateTime($oldGallery['date_created']));
+                    $newGallery->setDateChanged(new \DateTime($oldGallery['date_changed']));
+                    $newGallery->setActive($oldGallery['active']);
+                    $newGallery->setMember($newMember);
+                }
+
+                if ($oldGallery['type'] == '5') {
+                    $newGallery = new CompetitionGallery();
+                    $newGallery->setName($oldGallery['name']);
+                    $newGallery->setDescription($oldGallery['description']);
+                    $newGallery->setDateCreated(new \DateTime($oldGallery['date_created']));
+                }
 
                 $entityManager->persist($newGallery);
-
+                $i = 1;
                 foreach($oldGallery['images'] as $image) {
                     $newImage = new Image();
                     $newImage->setName($image['name']);
@@ -65,12 +76,14 @@ class MigrateDataController extends AbstractController
                     $newImage->setDateCreated(new \DateTime($image['date_created']));
                     $newImage->setActive(true);
                     $newImage->setMember($newMember);
+                    $newImage->setSortOrder($i);
 
                     $entityManager->persist($newImage);
 
                     $entityManager->flush();
 
                     $newGallery->addImage($newImage);
+                    $i++;
                 }
 
                 $entityManager->flush();
@@ -117,6 +130,7 @@ class MigrateDataController extends AbstractController
             if(!in_array($row['galId'], $galIds)) {
                 $galleriesWithImages[$row['galId']] = [
                     'name' => (!empty($row['galNaam'])) ? $row['galNaam'] : '',
+                    'type' => (!empty($row['type'])) ? $row['type'] : 4,
                     'description' => (!empty($row['beschrijving'])) ? $row['beschrijving'] : '',
                     'date_created' => $row['datum_aangemaakt'],
                     'date_changed' => $row['datum_gewijzigd'],
@@ -159,6 +173,17 @@ class MigrateDataController extends AbstractController
             FROM galerij as g 
             LEFT JOIN images2galerij as i2g ON i2g.galerij_id = g.id
             LEFT JOIN images as i ON i2g.image_id = i.id
+        ";
+    }
+
+    protected function getCompetitionsWithImages() :string
+    {
+        return "
+            SELECT g.id AS galId, g.naam AS galNaam, g.*, i.id AS imageId, i.naam AS imageNaam, i.* 
+            FROM galerij as g 
+            LEFT JOIN images2galerij as i2g ON i2g.galerij_id = g.id
+            LEFT JOIN images as i ON i2g.image_id = i.id
+            WHERE g.type = '5'
         ";
     }
 }

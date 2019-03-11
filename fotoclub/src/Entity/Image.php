@@ -54,6 +54,11 @@ class Image
      */
     private $member;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sortOrder;
+
     public function __construct()
     {
         $this->competitionGalleries = new ArrayCollection();
@@ -165,6 +170,18 @@ class Image
     public function setMember(?Member $member): self
     {
         $this->member = $member;
+
+        return $this;
+    }
+
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    public function setSortOrder(int $sortOrder): self
+    {
+        $this->sortOrder = $sortOrder;
 
         return $this;
     }
