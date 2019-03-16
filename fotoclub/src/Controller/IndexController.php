@@ -9,9 +9,7 @@ use App\Service\GalleryService;
 
 class IndexController extends AbstractController
 {
-    /**
-     * @var GalleryService
-     */
+    /** @var GalleryService */
     protected $galleryService;
 
     public function __construct(GalleryService $galleryService)
@@ -20,16 +18,16 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/home", name="home")
+     * @Route("/", name="home")
      * @return Response
      */
     public function index()
     {
-        $gallery = $this->galleryService->getGalleryById(31);
+        $images = $this->galleryService->getLastCreatedImages(5);
 
         return $this->render('index.html.twig', [
             'controller_name' => 'MigrateDataController',
-            'gallery' => $gallery,
+            'images' => $images,
         ]);
     }
 }

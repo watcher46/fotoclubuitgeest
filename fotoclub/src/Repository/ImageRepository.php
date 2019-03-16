@@ -47,4 +47,20 @@ class ImageRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param int $limit
+     * @return Image[]
+     */
+    public function findLastCreatedImages(int $limit = 1)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.active = :active')
+            ->setParameter('active', true)
+            ->orderBy('i.dateCreated', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

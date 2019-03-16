@@ -4,10 +4,12 @@
 
 {% block body %}
 
-    <div class="warning">
+    <div class="fotoclub-slider">
         <h1>Hallo</h1>
-            {% for image in gallery.images %}
-                <img src="/assets/images/galerij/{{ image.filename|replace({'.jpg': '_242x161.jpg'}) }}" />
+            {% for image in images %}
+                <a class="" href="/assets/images/original/{{ image.filename }}" data-lightbox="Nieuwste Fotos" title="{{ image.name }}">
+                    <img src="/assets/images/galerij/{{ image.filename|replace({'.jpg': '_242x161.jpg'}) }}" />
+                </a>
             {% endfor %}
     </div>
 {% endblock %}
