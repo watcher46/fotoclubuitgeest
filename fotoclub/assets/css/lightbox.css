@@ -1,0 +1,13 @@
+.lightbox .lb-outerContainer {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.lightbox .lb-dataContainer {
+    background: #fff;
+}
+
+.lightbox .lb-caption,
+.lightbox .lb-number {
+    color: #383737;
+}
