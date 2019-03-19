@@ -56,7 +56,9 @@ class ImageRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.active = :active')
+            ->andWhere('i.fileName > :filename')
             ->setParameter('active', true)
+            ->setParameter('filename', '')
             ->orderBy('i.dateCreated', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
