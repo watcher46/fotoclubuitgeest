@@ -16,9 +16,11 @@ FROM php:7.3-apache
 LABEL maintainer="watcher46@gmail.com"
 
 RUN apt-get update -y && \
-    apt-get install -y unzip libzip-dev libxslt-dev libpq-dev git && \
+    apt-get install -y unzip libzip-dev libxslt-dev libpq-dev git libpng-dev libjpeg62-turbo-dev  && \
     docker-php-ext-configure zip --with-libzip && \
     docker-php-ext-install pdo xsl pdo_mysql mysqli pdo_pgsql zip opcache && \
+    docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-install gd && \
     docker-php-ext-enable opcache
 
 # Set permissions correctly on the www-data user
