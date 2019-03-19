@@ -23,7 +23,7 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-        $images = $this->galleryService->getLastCreatedImages(5);
+        $images = $this->galleryService->getLastCreatedImages(4);
 
         return $this->render('index.html.twig', [
             'controller_name' => 'MigrateDataController',

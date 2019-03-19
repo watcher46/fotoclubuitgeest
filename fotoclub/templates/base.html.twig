@@ -9,29 +9,15 @@
     </head>
     <body>
         <div class="container">
-            <header class="row header-container">
-            </header>
+            <div class="row header-container">
+            {% include 'header.html.twig' %}
+            </div>
 
-
-            <main class="mainContent">
+            <div class="mainContent">
                 {% block body %}{% endblock %}
-            </main>
+            </div>
 
-            <footer class="footer">
-                <div class="col-lg-12 navbar navbar-fotoclub">
-                    <div class="container-fluid">
-                        <ul class="nav navbar-nav">
-                            <li><a class="footerLink" href="">Home</a></li>
-                            <li><a class="footerLink" href="">Galerij</a></li>
-                            <li><a class="footerLink" href="">Nieuws</a></li>
-                            <li><a class="footerLink" href="">Agenda</a></li>
-                            <li><a class="footerLink" href="">Contact</a></li>
-                            <li><a class="footerLink" href="">Info</a></li>
-                            <li><a class="footerLink" href="">Links</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
+            {% include 'footer.html.twig' %}
         </div>
         {% block javascripts %}
             {{ encore_entry_script_tags('fotoclub') }}

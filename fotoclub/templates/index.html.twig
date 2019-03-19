@@ -3,13 +3,42 @@
 {% block title %}Fotoclub Uitgeest{% endblock %}
 
 {% block body %}
-
-    <div class="fotoclub-slider">
-        <h1>Hallo</h1>
-            {% for image in images %}
-                <a class="" href="/assets/images/original/{{ image.filename }}" data-lightbox="Nieuwste Fotos" title="{{ image.name }}">
-                    <img src="/assets/images/galerij/{{ image.filename|replace({'.jpg': '_242x161.jpg'}) }}" />
-                </a>
-            {% endfor %}
+    <div class="col-lg-12">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <header>
+                    <h1>Hallo</h1>
+                </header>
+                <div class="row">
+                    <section class="col-sm-8 col-md-8 col-lg-8">
+                        <span class="user-content">Description</span>
+                    </section>
+                    <div class="image col-sm-4 col-md-4 col-lg-4">
+                        frontpage image
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12 nieuwsteImages">
+                <h3>Nieuwste Foto's</h3>
+                <div class="row">
+                    {% for image in images %}
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <a class="" href="/assets/images/original/{{ image.filename }}" data-lightbox="Nieuwste Fotos" title="{{ image.name }}">
+                                <img class="center-block img-responsive" src="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('homepage_thumb') }}" title="{{ image.name }}"/>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <a class="btn btn-default pull-right moreButton" href="/">
+                        <span class="text">Meer foto's &raquo;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

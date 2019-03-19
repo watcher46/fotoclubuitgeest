@@ -30,7 +30,7 @@ header .title {
 }
 
 .nivoSlider {
-    background:url(../images/loading.gif) no-repeat 50% 50%;
+    background:url(loading.gif) no-repeat 50% 50%;
     -webkit-border-radius: 0px 0px 5px 5px;
     border-radius: 0px 0px 5px 5px;
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.60);
@@ -132,7 +132,6 @@ article .image img {
     -moz-border-radius: 5px;
     border-radius: 5px;
     max-width: 100%;
-    max-height: 161px;
 }
 
 .nieuwsteImages .moreButton {

@@ -1,0 +1,13 @@
+<header class="row header-container">
+    <div class="col-xs-12 imageContainer">
+        <h1 class="title">Fotoclub Uitgeest</h1>
+        <div id="slider" style="display:none;">
+            {% for headerImage in headerImages %}
+                <img src="{{ asset('assets/images/header/' ~ headerImage) }}" alt="" />
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-xs-12 menuHolder">
+        {% include 'navigation.html.twig' %}
+    </div>
+</header>
