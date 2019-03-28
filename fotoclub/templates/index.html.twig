@@ -27,7 +27,7 @@
                 <div class="row">
                     {% for image in images %}
                         <div class="col-xs-12 col-sm-6 col-md-3">
-                            <a class="" href="/assets/images/original/{{ image.filename }}" data-lightbox="Nieuwste Fotos" title="{{ image.name }}">
+                            <a class="" href="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_full') }}" data-lightbox="Nieuwste Fotos" title="{{ image.name }}">
                                 <img class="center-block img-responsive" src="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('homepage_thumb') }}" title="{{ image.name }}"/>
                             </a>
                         </div>
