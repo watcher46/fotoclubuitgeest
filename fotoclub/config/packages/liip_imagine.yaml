@@ -28,3 +28,37 @@ liip_imagine:
                     size:          [253, 253]
                     mode:          outbound
                     allow_upscale: true
+        gallery_thumb:
+
+            # set your image quality defaults
+            jpeg_quality:          85
+            png_compression_level: 8
+
+            # setup the filter steps to apply for this transformation
+            filters:
+
+                # strip the image of all metadata
+                strip: ~
+
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size:          [160, 100]
+                    mode:          outbound
+                    allow_upscale: true
+        gallery_full:
+
+            # set your image quality defaults
+            jpeg_quality:          100
+            png_compression_level: 8
+
+            # setup the filter steps to apply for this transformation
+            filters:
+
+                # strip the image of all metadata
+                strip: ~
+
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size:          [1500, 2000]
+                    mode:          inset
+                    allow_upscale: false
