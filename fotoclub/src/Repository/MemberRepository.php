@@ -47,4 +47,19 @@ class MemberRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @return Member[]
+     */
+    public function findActiveMembers()
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m')
+            ->andWhere('m.active = :active')
+            ->orderBy('m.name', 'ASC')
+            ->setParameter('active', true)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

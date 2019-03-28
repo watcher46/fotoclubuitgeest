@@ -42,4 +42,13 @@ class GalleryService
         }
         return $this->imageRepo->findLastCreatedImages($limit);
     }
+
+    /**
+     * @return Gallery
+     */
+    public function getRandomActiveGallery()
+    {
+        $gallery = $this->galleryRepo->findRandomActiveGallery();
+        return $this->galleryRepo->find($gallery['id']);
+    }
 }

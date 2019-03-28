@@ -77,4 +77,20 @@ class GalleryRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    /**
+     * @return Gallery
+     */
+    public function findRandomActiveGallery()
+    {
+        return $this->createQueryBuilder('g')
+            ->select('g.id')
+            ->andWhere('g.active = :active')
+            ->orderBy('RAND()')
+            ->setParameter('active', true)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }
