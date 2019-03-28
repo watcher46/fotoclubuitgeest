@@ -43,7 +43,7 @@ class IndexController extends AbstractController
         $members = $this->membersService->getAllActiveMembers();
         $gallery = $this->galleryService->getRandomActiveGallery();
 
-        return $this->render('members/index.html.twig', [
+        return $this->render('members/overview.html.twig', [
             'members' => $members,
             'gallery' => $gallery,
         ]);
