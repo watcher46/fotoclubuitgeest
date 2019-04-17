@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerij | Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            {% include 'members/_leftNav.html.twig' with {'members': members} %}
+        </div>
+        <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+            <article class="col-xs-12">
+                <header class="row">
+                    <h1 class="col-xs-12">{{ gallery.name|lower|ucwords }}</h1>
+                    <a class="author" href="" rel="author">{{ gallery.member.name }}</a>
+                </header>
+                <section class="row">{{ gallery.description|raw }}</section>
+                <div class="row">
+                    <div class="col-xs-12 galerij">
+                        {% for image in gallery.images %}
+                            <div class="col-xs-12 col-sm-6 col-lg-4">
+                                <a class="text-right"
+                                   href="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_full') }}"
+                                   data-lightbox="Galerij {{ gallery.name|lower|ucwords }}"
+                                >
+                                    <img class="img-responsive center-block"
+                                         src="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_thumb_med') }}"
+                                    >
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+{% endblock %}

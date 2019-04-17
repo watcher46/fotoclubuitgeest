@@ -48,8 +48,12 @@ class GalleryRepository extends ServiceEntityRepository
     }
     */
 
-    public function findOneWithSortedImages(int $id, string $sort): ?Gallery
+    public function findOneWithSortedImages(int $id, string $sort, bool $active = true): ?Gallery
     {
+        if (empty($sort)) {
+            $sort = 'ASC';
+        }
+
         return $this->createQueryBuilder('g')
             ->select('g', 'i')
             ->leftJoin('g.images', 'i')
@@ -57,7 +61,7 @@ class GalleryRepository extends ServiceEntityRepository
             ->andWhere('g.active = :active')
             ->orderBy('i.sortOrder', $sort)
             ->setParameter('id', $id)
-            ->setParameter('active', true)
+            ->setParameter('active', $active)
             ->getQuery()
             ->getOneOrNullResult()
             ;
@@ -92,5 +96,10 @@ class GalleryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
             ;
+    }
+
+    public function findActiveGallery(int $id)
+    {
+        return $this->findOneWithSortedImages($id, 'ASC', true);
     }
 }

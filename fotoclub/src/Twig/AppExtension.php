@@ -4,6 +4,7 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
 use Symfony\Component\Finder\Finder;
 
 class AppExtension extends AbstractExtension implements \Twig\Extension\GlobalsInterface
@@ -15,6 +16,13 @@ class AppExtension extends AbstractExtension implements \Twig\Extension\GlobalsI
     {
         return [
             'headerImages' => $this->headerImages(),
+        ];
+    }
+
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('ucwords', 'ucwords')
         ];
     }
 
@@ -30,5 +38,10 @@ class AppExtension extends AbstractExtension implements \Twig\Extension\GlobalsI
         shuffle($files);
 
         return $files;
+    }
+
+    public function getName()
+    {
+        return 'ext.ucwords';
     }
 }

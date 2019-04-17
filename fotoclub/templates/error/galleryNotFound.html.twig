@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerij niet gevonden | Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            {% include 'members/_leftNav.html.twig' with {'members': members} %}
+        </div>
+        <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+            <article class="col-xs-12">
+                <header class="row">
+                    <h1 class="col-xs-12">Niet gevonden!</h1>
+                </header>
+                <section class="row">De galerij kan niet gevonden worden.</section>
+            </article>
+        </div>
+    </div>
+{% endblock %}

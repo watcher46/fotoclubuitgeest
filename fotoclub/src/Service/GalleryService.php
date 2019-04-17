@@ -51,4 +51,15 @@ class GalleryService
         $gallery = $this->galleryRepo->findRandomActiveGallery();
         return $this->galleryRepo->find($gallery['id']);
     }
+
+    public function getActiveGallery(int $galleryId): ?Gallery
+    {
+        $gallery = $this->galleryRepo->findActiveGallery($galleryId);
+
+        if (! $gallery) {
+            throw new \Exception('Gallery not found');
+        }
+
+        return $gallery;
+    }
 }
