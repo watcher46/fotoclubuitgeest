@@ -13,6 +13,8 @@
                 <article class="row galerij">
                     <header class="col-xs-8 pull-right">
                         <h1>{{ gallery.name }}</h1>
+                        <span class="small"><em>{{ gallery.images|length }} foto's</em></span>
+                        <span class="user-content">{{ gallery.description|raw }}</span>
                     </header>
                     <section class="col-xs-3 pull-left">
                         <div class="imageHolder">

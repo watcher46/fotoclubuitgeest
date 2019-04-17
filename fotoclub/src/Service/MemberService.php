@@ -27,10 +27,11 @@ class MemberService
 
     /**
      * @param int $id
-     * @return Member|null
+     * @return Member
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getMember(int $id)
     {
-        return $this->memberRepo->find($id);
+        return $this->memberRepo->findOneWithSortedGalleries($id, 'DESC', true);
     }
 }

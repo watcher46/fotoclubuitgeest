@@ -62,4 +62,35 @@ class MemberRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    /**
+     * @param int $id
+     * @param string $sort
+     * @param bool $active
+     *
+     * @return Member
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneWithSortedGalleries(int $id, string $sort = 'ASC', bool $active = true)
+    {
+        $sort = strtoupper($sort);
+        if ($sort !== 'ASC' && $sort !== 'DESC') {
+            $sort = 'ASC';
+        }
+
+        return $this->createQueryBuilder('m')
+            ->select('m', 'g', 'i')
+            ->leftJoin('m.galleries', 'g')
+            ->leftJoin('g.images', 'i')
+            ->andWhere('m.id = :id')
+            ->andWhere('m.active = :memberActive')
+            ->andWhere('g.active = :active')
+            ->orderBy('g.dateCreated', $sort)
+            ->setParameter('memberActive', true)
+            ->setParameter('id', $id)
+            ->setParameter('active', $active)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }
