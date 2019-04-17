@@ -24,4 +24,13 @@ class MemberService
     {
         return $this->memberRepo->findActiveMembers();
     }
+
+    /**
+     * @param int $id
+     * @return Member|null
+     */
+    public function getMember(int $id)
+    {
+        return $this->memberRepo->find($id);
+    }
 }

@@ -35,4 +35,20 @@ class MemberController extends AbstractController
             'gallery' => $gallery,
         ]);
     }
+
+    /**
+     *
+     * @Route("/lid/{memberId}", name="member_details")
+     */
+    public function memberDetails(int $memberId)
+    {
+        $members = $this->membersService->getAllActiveMembers();
+
+        $member = $this->membersService->getMember($memberId);
+
+        return $this->render('members/details.html.twig', [
+            'members' => $members,
+            'member' => $member,
+        ]);
+    }
 }
