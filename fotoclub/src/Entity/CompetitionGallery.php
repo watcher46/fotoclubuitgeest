@@ -38,6 +38,11 @@ class CompetitionGallery
      */
     private $images;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -106,6 +111,18 @@ class CompetitionGallery
         if ($this->images->contains($image)) {
             $this->images->removeElement($image);
         }
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

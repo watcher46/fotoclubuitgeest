@@ -64,6 +64,7 @@ class MigrateDataController extends AbstractController
                     $newGallery = new CompetitionGallery();
                     $newGallery->setName($oldGallery['name']);
                     $newGallery->setDescription($oldGallery['description']);
+                    $newGallery->setActive($oldGallery['active']);
                     $newGallery->setDateCreated(new \DateTime($oldGallery['date_created']));
                 }
 
