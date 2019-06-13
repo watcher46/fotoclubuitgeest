@@ -34,14 +34,14 @@ class CompetitionGallery
     private $dateCreated;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="competitionGalleries")
-     */
-    private $images;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $active;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery", orphanRemoval=true)
+     */
+    private $images;
 
     public function __construct()
     {
@@ -89,32 +89,6 @@ class CompetitionGallery
         return $this;
     }
 
-    /**
-     * @return Collection|Image[]
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
-        }
-
-        return $this;
-    }
-
     public function getActive(): ?bool
     {
         return $this->active;
@@ -123,6 +97,37 @@ class CompetitionGallery
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CompetitionImage[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImages(CompetitionImage $images): self
+    {
+        if (!$this->images->contains($images)) {
+            $this->images[] = $images;
+            $images->setCompetitionGallery($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImages(CompetitionImage $images): self
+    {
+        if ($this->images->contains($images)) {
+            $this->images->removeElement($images);
+            // set the owning side to null (unless already changed)
+            if ($images->getCompetitionGallery() === $this) {
+                $images->setCompetitionGallery(null);
+            }
+        }
 
         return $this;
     }

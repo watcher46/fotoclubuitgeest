@@ -3,14 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\CompetitionGallery;
+use App\Entity\CompetitionGalleryImage;
+use App\Entity\CompetitionImage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Member;
 use App\Entity\Gallery;
 use App\Entity\Image;
+use App\Repository\ImageRepository;
 
 class MigrateDataController extends AbstractController
 {
+    protected $imageRepository;
+    public function __construct(ImageRepository $imageRepository)
+    {
+        $this->imageRepository = $imageRepository;
+    }
+
     /**
      * @Route("/migrate/data", name="migrate_data")
      */
@@ -24,6 +33,7 @@ class MigrateDataController extends AbstractController
         //fetch data to be migrated
         $membersWithGalleryIds = $connection->fetchAll($this->getMembersWithGalleriesQuery());
         $galleriesWithImages = $connection->fetchAll($this->getGalleriesWithImagesQuery());
+        $competitionGalleriesWithoutMember = $connection->fetchAll($this->getCompetitionsWithImagesQuery());
 
         //structure the data for new entities
         $members = $this->parseMembersWithGalleries($membersWithGalleryIds);
@@ -31,7 +41,11 @@ class MigrateDataController extends AbstractController
 
         $nonExistingGalleries = [];
 
-        //insert the newly structured data
+
+        $newMembersWithNewImageIds = [];
+        $competitionGalleryLinkedToMember = [];
+
+        //insert the newly structured data for all members
         foreach ($members as $member) {
             $newMember = new Member();
             $newMember->setMemberNumber($member['member_number']);
@@ -60,12 +74,8 @@ class MigrateDataController extends AbstractController
                     $newGallery->setMember($newMember);
                 }
 
-                if ($oldGallery['type'] == '5') {
-                    $newGallery = new CompetitionGallery();
-                    $newGallery->setName($oldGallery['name']);
-                    $newGallery->setDescription($oldGallery['description']);
-                    $newGallery->setActive($oldGallery['active']);
-                    $newGallery->setDateCreated(new \DateTime($oldGallery['date_created']));
+                if($oldGallery['type'] == '5') {
+                    $competitionGalleryLinkedToMember[] = $member;
                 }
 
                 $entityManager->persist($newGallery);
@@ -84,6 +94,9 @@ class MigrateDataController extends AbstractController
                     $entityManager->flush();
 
                     $newGallery->addImage($newImage);
+
+                    $newMembersWithNewImageIds[$image['id']] = ['memberId' => $newMember->getId(), 'newImageId' => $newImage->getId(), 'oldImage' => $image];
+
                     $i++;
                 }
 
@@ -94,9 +107,52 @@ class MigrateDataController extends AbstractController
             $entityManager->clear();
         }
 
+
+        $competitions = $this->parseGalleriesWithImages($competitionGalleriesWithoutMember);
+        $notSavedImages = [];
+        //insert all competitions
+        foreach($competitions as $competition) {
+            $newGallery = new CompetitionGallery();
+            $newGallery->setName($competition['name']);
+            $newGallery->setDescription($competition['description']);
+            $newGallery->setActive($competition['active']);
+            $newGallery->setDateCreated(new \DateTime($competition['date_created']));
+
+            $entityManager->persist($newGallery);
+
+            $entityManager->flush();
+
+            $i = 1;
+            foreach($competition['images'] as $image) {
+
+                if(!array_key_exists($image['id'], $newMembersWithNewImageIds)) {
+                    $notSavedImages[] = [
+                        'image' => $image,
+                        'competition' => $competition,
+                    ];
+                    continue;
+                }
+
+                $imageId = $newMembersWithNewImageIds[$image['id']]['newImageId'];
+                $image = $this->imageRepository->find($imageId);
+
+                $competitionImage = new CompetitionImage();
+                $competitionImage->setCompetitionGallery($newGallery);
+                $competitionImage->setImage($image);
+                $competitionImage->setSortOrder($i);
+
+                $entityManager->persist($competitionImage);
+
+                $i++;
+            }
+            $entityManager->flush();
+        }
+
         return $this->render('migrate_data/index.html.twig', [
             'controller_name' => 'MigrateDataController',
-            'nonExistingGalleries' => $nonExistingGalleries
+            'nonExistingGalleries' => $nonExistingGalleries,
+            'notSavedImagesToCompetition' => $notSavedImages,
+            'competitionGalleryLinkedToMember' => $competitionGalleryLinkedToMember,
         ]);
     }
 
@@ -138,6 +194,7 @@ class MigrateDataController extends AbstractController
                     'active' => ($row['status'] === 'actief')? true : false,
                     'images' => [
                         [
+                            'id' => (!empty($row['imageId'])) ? $row['imageId'] : null,
                             'name' => (!empty($row['imageNaam'])) ? $row['imageNaam'] : '',
                             'file_name' => (!empty($row['naam_original'])) ? $row['naam_original'] : '',
                             'date_created' => $row['datum']
@@ -146,6 +203,7 @@ class MigrateDataController extends AbstractController
                 ];
             } else {
                 $galleriesWithImages[$row['galId']]['images'][] = [
+                    'id' => (!empty($row['imageId'])) ? $row['imageId'] : null,
                     'name' => (!empty($row['imageNaam'])) ? $row['imageNaam'] : '',
                     'file_name' => (!empty($row['naam_original'])) ? $row['naam_original'] : '',
                     'date_created' => $row['datum']
@@ -163,6 +221,7 @@ class MigrateDataController extends AbstractController
             FROM leden as l
             LEFT JOIN leden2galerij as l2g ON l.id = l2g.lid_id
             LEFT JOIN galerij as g ON l2g.galerij_id = g.id
+            WHERE g.type = '4'
             ORDER BY l.id ASC
         ";
     }
@@ -177,7 +236,7 @@ class MigrateDataController extends AbstractController
         ";
     }
 
-    protected function getCompetitionsWithImages() :string
+    protected function getCompetitionsWithImagesQuery() :string
     {
         return "
             SELECT g.id AS galId, g.naam AS galNaam, g.*, i.id AS imageId, i.naam AS imageNaam, i.* 

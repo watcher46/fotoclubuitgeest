@@ -47,4 +47,28 @@ class CompetitionGalleryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllActive()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.active = 1')
+            ->orderBy('c.date_created', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findAllActiveInSeason(string $seasonStart, string $seasonEnd)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb->where('c.active = 1')
+            ->add('where', $qb->expr()->between('c.dateCreated', ':seasonStart', ':seasonEnd'))
+            ->setParameter('seasonStart', $seasonStart)
+            ->setParameter('seasonEnd', $seasonEnd)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
