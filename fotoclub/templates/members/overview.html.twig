@@ -4,10 +4,10 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-3">
             {% include 'members/_leftNav.html.twig' with {'members': members} %}
         </div>
-        <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+        <div class="col-xs-12 col-sm-9">
             <article class="galerijUitgelicht">
                 <h3>Galerij Uitgelicht</h3>
                 <div class="row galerij">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <header>
-                    <h1>{{ gallery.name }}</h1>
+                    <h1><a class="text-right" href="{{ path('gallery_view', { galleryId: gallery.id }) }}" title="Bekijk de galerij">{{ gallery.name }}</a></h1>
                 </header>
                 <section>
                     <dl class="dl-horizontal">

@@ -12,7 +12,7 @@
                 {% set firstImage = gallery.images|first %}
                 <article class="row galerij">
                     <header class="col-xs-8 pull-right">
-                        <h1>{{ gallery.name }}</h1>
+                        <h1><a class="text-right" href="{{ path('gallery_view', { galleryId: gallery.id }) }}" title="Bekijk de galerij">{{ gallery.name }}</a></h1>
                         <span class="small"><em>{{ gallery.images|length }} foto's</em></span>
                         <span class="user-content">{{ gallery.description|raw }}</span>
                     </header>
