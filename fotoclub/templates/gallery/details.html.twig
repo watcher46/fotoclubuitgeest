@@ -11,7 +11,7 @@
             <article class="col-xs-12">
                 <header class="row">
                     <h1 class="col-xs-12">{{ gallery.name|lower|ucwords }}</h1>
-                    <a class="author" href="" rel="author">{{ gallery.member.name }}</a>
+                    <a class="col-xs-12 author" href="{{ path('member_details',{memberId: gallery.member.id}) }}" rel="author">{{ gallery.member.name }}</a>
                 </header>
                 <section class="row">{{ gallery.description|raw }}</section>
                 <div class="row">

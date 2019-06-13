@@ -1,0 +1,12 @@
+<aside>
+    <ul>
+        <li>
+            <span>Huidig Seizoen</span>
+            <ul class="second">
+                {% for competition in competitions %}
+                <li><a href="{{ path('competition_details', {competitionId: competition.id}) }}">{{ competition.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</aside>

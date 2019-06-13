@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competities | Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            {% include 'competition/_leftNav.html.twig' with {'competitions': competitions} %}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            {% for competition in competitions %}
+                <div style="background: white;">
+                    <h2>{{ competition.name }}</h2>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
