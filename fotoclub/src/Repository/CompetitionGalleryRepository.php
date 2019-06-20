@@ -14,6 +14,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CompetitionGalleryRepository extends ServiceEntityRepository
 {
+
+    const SUPPORTED_ORDER_BY_COLUMN = ['id', 'dateCreated'];
+    const SUPPORTED_ORDER = ['ASC', 'DESC'];
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CompetitionGallery::class);
@@ -58,15 +62,23 @@ class CompetitionGalleryRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findAllActiveInSeason(string $seasonStart, string $seasonEnd)
+    public function findAllActiveInSeason(string $seasonStart, string $seasonEnd, string $orderByColumn = 'id', string $order = 'DESC')
     {
+        if(!in_array($orderByColumn, self::SUPPORTED_ORDER_BY_COLUMN)) {
+            return false;
+        }
+
+        if(!in_array($order, self::SUPPORTED_ORDER)) {
+            return false;
+        }
+
         $qb = $this->createQueryBuilder('c');
 
         return $qb->where('c.active = 1')
             ->add('where', $qb->expr()->between('c.dateCreated', ':seasonStart', ':seasonEnd'))
             ->setParameter('seasonStart', $seasonStart)
             ->setParameter('seasonEnd', $seasonEnd)
-            ->orderBy('c.id', 'ASC')
+            ->orderBy('c.'.$orderByColumn, $order)
             ->getQuery()
             ->getResult()
             ;

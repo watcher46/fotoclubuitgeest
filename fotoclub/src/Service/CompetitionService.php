@@ -34,9 +34,41 @@ class CompetitionService
     {
         $currentSeason = $this->getCurrentSeasonDates();
 
-        return $this->competitionRepo->findAllActiveInSeason($currentSeason['start'], $currentSeason['end']);
+        return $this->competitionRepo->findAllActiveInSeason($currentSeason['start'], $currentSeason['end'], 'dateCreated', 'DESC');
     }
-    protected function getAllCompetitionsInArchivedSeasons(){}
+
+    public function getAllArchivedCompetitionsPerSeason()
+    {
+        $currentSeasonDates = $this->getCurrentSeasonDates();
+
+        $archivedCompetitions = $this->competitionRepo->findAllActiveInSeason(date('Y-m-d', 0), $currentSeasonDates['start'], 'dateCreated', 'DESC');
+        $seasons = [];
+        $seasonStartDates = [];
+
+        $i = 0;
+        /** @var CompetitionGallery $competition */
+        foreach ($archivedCompetitions as $competition) {
+            $dateCreated = $competition->getDateCreated();
+            $seasonDates = $this->getSeasonDatesByTime($dateCreated->getTimestamp());
+            if (!in_array($seasonDates['start'], $seasonStartDates)) {
+                $seasonStartDates[] = $seasonDates['start'];
+                $i++;
+                $seasons[$i] = [
+                    'season' => $seasonDates,
+                    'competitions' => [$competition],
+                ];
+            } else {
+                $seasons[$i]['competitions'][] = $competition;
+            }
+        }
+
+        return $seasons;
+    }
+
+    public function getCompetition(int $competitionId)
+    {
+        return $this->competitionRepo->find($competitionId);
+    }
 
     protected function getSeasonDatesByTime($time)
     {
