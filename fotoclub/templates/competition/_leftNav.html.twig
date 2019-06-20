@@ -4,7 +4,22 @@
             <span>Huidig Seizoen</span>
             <ul class="second">
                 {% for competition in competitions %}
-                <li><a href="{{ path('competition_details', {competitionId: competition.id}) }}">{{ competition.name }}</a></li>
+                <li><a class="small" href="{{ path('competition_details', {competitionId: competition.id}) }}">{{ competition.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <span>Archief</span>
+            <ul class="second">
+                {% for season in archivedCompetitions %}
+                    <li>
+                        <p>Seizoen {{ season.season.start|date("Y") }}-{{ season.season.end|date("Y") }}</p>
+                        <ul class="second">
+                            {% for competition in season.competitions %}
+                                <li><a class="small" href="{{ path('competition_details', {competitionId: competition.id}) }}">{{ competition.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 {% endfor %}
             </ul>
         </li>

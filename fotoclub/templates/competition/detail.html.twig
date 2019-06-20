@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competitie | Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            {% include 'competition/_leftNav.html.twig' with {'competitions': competitions, 'archivedCompetitions': archivedCompetitions} %}
+        </div>
+        <div class="col-xs-12 col-sm-9 viewGallery">
+            <article class="col-xs-12">
+                <header class="row">
+                    <h1 class="col-xs-12">{{ competition.name|lower|ucwords }}</h1>
+                </header>
+                <section class="row">{{ competition.description|raw }}</section>
+                <div class="row">
+                    <div class="col-xs-12 galerij">
+                        {% for compImage in competition.getImages %}
+                            {% set image = compImage.image %}
+                            <div class="col-xs-12 col-sm-6 col-lg-4">
+                                <a
+                                   href="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_full') }}"
+                                   data-lightbox="Competitie {{ competition.name|lower|ucwords }}"
+                                   title="Auteur: {{ image.member.name }} ({{ image.member.memberNumber }}) - Foto: {{ image.name }}"
+                                >
+                                    <img class="img-responsive center-block"
+                                         src="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_thumb_med') }}"
+                                         title="Auteur: {{ image.member.name }} ({{ image.member.memberNumber }})<br>Foto: {{ image.name }}"
+                                    >
+                                    <span class="imageInfo">
+                                        <span class="image-author">Auteur: {{ image.member.name }} ({{ image.member.memberNumber }})</span>
+                                        <span class="image-title">Titel: {{ image.name }}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+{% endblock %}
