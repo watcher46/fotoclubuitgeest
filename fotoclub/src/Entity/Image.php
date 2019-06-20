@@ -39,7 +39,7 @@ class Image
     private $gallery;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\CompetitionGallery", mappedBy="images")
+     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="image")
      */
     private $competitionGalleries;
 

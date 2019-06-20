@@ -28,7 +28,7 @@ class CompetitionImage
     private $competitionGallery;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Image", inversedBy="competitionGalleries")
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=false)
      */
     private $image;
