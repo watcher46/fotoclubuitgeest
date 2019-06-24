@@ -74,10 +74,10 @@ class CompetitionGalleryRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('c');
 
-        return $qb->where('c.active = 1')
-            ->add('where', $qb->expr()->between('c.dateCreated', ':seasonStart', ':seasonEnd'))
+        return $qb->add('where', $qb->expr()->between('c.dateCreated', ':seasonStart', ':seasonEnd'))
             ->setParameter('seasonStart', $seasonStart)
             ->setParameter('seasonEnd', $seasonEnd)
+            ->andWhere('c.active = 1')
             ->orderBy('c.'.$orderByColumn, $order)
             ->getQuery()
             ->getResult()
