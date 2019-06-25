@@ -39,7 +39,7 @@ class CompetitionGallery
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery")
      */
     private $images;
 

@@ -1,4 +1,8 @@
 easy_admin:
+    design:
+        form_theme:
+            - '@EasyAdmin/form/bootstrap_4.html.twig'
+            - 'admin/form.html.twig'
     entities:
         Gallery:
             class: App\Entity\Gallery
@@ -21,8 +25,11 @@ easy_admin:
             class: App\Entity\CompetitionGallery
             edit:
                 fields:
-                    - {property: 'images', sortable: true}
-                sort: ['images.sort_order', 'ASC']
+                    - 'name'
+                    - 'description'
+                    - 'dateCreated'
+                    - 'active'
+                    - { property: 'images', label: 'Images', type: 'collection', type_options: { entry_type: 'App\Form\CompetitionImages', by_reference: false, block_name: 'competition_images' } }
         Image:
             class: App\Entity\Image
         Member:
