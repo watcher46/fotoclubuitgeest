@@ -24,10 +24,6 @@ RUN apt-get update -y && \
     docker-php-ext-enable opcache
 
 # Set permissions correctly on the www-data user
-ARG USER_ID=502
-RUN userdel www-data && groupadd www-data
-RUN useradd -g www-data -u ${USER_ID} -l www-data
-
 RUN mkdir -p /var/www/html && chown -R www-data:www-data /var/www/html
 
 # Copy SSL certificates from intermediate OpenSSL container
