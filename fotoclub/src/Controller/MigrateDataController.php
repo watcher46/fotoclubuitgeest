@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Member;
 use App\Entity\Gallery;
 use App\Entity\Image;
+use App\Entity\News;
 use App\Repository\ImageRepository;
 
 class MigrateDataController extends AbstractController
@@ -156,6 +157,33 @@ class MigrateDataController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("migrate/news", name="migrate_news")
+     */
+    public function news(){
+        die('only execute on migration day!');
+        $entityManager = $this->getDoctrine()->getManager();
+
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $entityManager->getConnection();
+        //fetch data to be migrated
+        $newsItems = $connection->fetchAll($this->getNewsQuery());
+
+        foreach($newsItems as $newsRow) {
+            $newsItem = new News();
+
+            $newsItem->setTitle($newsRow['titel']);
+            $newsItem->setText($newsRow['description']);
+            $newsItem->setDateCreated(new \DateTime($newsRow['datum']));
+            $newsItem->setDateUpdated(new \DateTime($newsRow['datum']));
+            $newsItem->setEnabled(($newsRow['status'] == 'actief')? true : false);
+
+            $entityManager->persist($newsItem);
+            $entityManager->flush();
+        }
+    }
+
+
     protected function parseMembersWithGalleries(array $result) :array
     {
         $membersWithGalleries = [];
@@ -244,6 +272,17 @@ class MigrateDataController extends AbstractController
             LEFT JOIN images2galerij as i2g ON i2g.galerij_id = g.id
             LEFT JOIN images as i ON i2g.image_id = i.id
             WHERE g.type = '5'
+        ";
+    }
+
+    protected function getNewsQuery() :string
+    {
+        return "
+            SELECT *
+            FROM `items`
+            WHERE `type_id` = '2' 
+            AND `status` = 'actief'
+            ORDER BY `datum` DESC
         ";
     }
 }
