@@ -59,9 +59,15 @@ class Image
      */
     private $sortOrder;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Page", mappedBy="image")
+     */
+    private $pages;
+
     public function __construct()
     {
         $this->competitionGalleries = new ArrayCollection();
+        $this->pages = new ArrayCollection();
     }
 
     public function __toString()
@@ -182,6 +188,37 @@ class Image
     public function setSortOrder(int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Page[]
+     */
+    public function getPages(): Collection
+    {
+        return $this->pages;
+    }
+
+    public function addPage(Page $page): self
+    {
+        if (!$this->pages->contains($page)) {
+            $this->pages[] = $page;
+            $page->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePage(Page $page): self
+    {
+        if ($this->pages->contains($page)) {
+            $this->pages->removeElement($page);
+            // set the owning side to null (unless already changed)
+            if ($page->getImage() === $this) {
+                $page->setImage(null);
+            }
+        }
 
         return $this;
     }

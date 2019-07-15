@@ -24,23 +24,37 @@ class Page
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private $text;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime")
      */
-    private $active;
+    private $dateUpdated;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PageType", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Image", inversedBy="pages")
      */
-    private $type;
+    private $image;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $homepage;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Navigation", inversedBy="pages")
+     */
+    private $navigationItem;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
 
     public function getId(): ?int
     {
@@ -103,6 +117,78 @@ class Page
     public function setType(PageType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function getDateUpdated(): ?\DateTimeInterface
+    {
+        return $this->dateUpdated;
+    }
+
+    public function setDateUpdated(\DateTimeInterface $dateUpdated): self
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getHomepage(): ?bool
+    {
+        return $this->homepage;
+    }
+
+    public function setHomepage(bool $homepage): self
+    {
+        $this->homepage = $homepage;
+
+        return $this;
+    }
+
+    public function getNavigationItem(): ?Navigation
+    {
+        return $this->navigationItem;
+    }
+
+    public function setNavigationItem(?Navigation $navigationItem): self
+    {
+        $this->navigationItem = $navigationItem;
+
+        return $this;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }
