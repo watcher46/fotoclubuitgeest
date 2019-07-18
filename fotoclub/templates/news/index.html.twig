@@ -15,7 +15,9 @@
                             <article class="partialSize">
                                 <header>
                                     <h1>{{ newsItem.title }}</h1>
-                                    <time>{{ newsItem.dateCreated |date('d-m-Y') }}</time>
+                                    <time datetime="{{ newsItem.dateCreated |date('Y-m-d') }}">
+                                        {{ newsItem.dateCreated |date('d-m-Y') }}
+                                    </time>
                                 </header>
                                 <section>{{ newsItem.text|raw }}</section>
                             </article>
