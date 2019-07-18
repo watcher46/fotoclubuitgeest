@@ -22,11 +22,26 @@ class NewsRepository extends ServiceEntityRepository
     /**
      * @return News[]|null
      */
-    public function findAllEnabledNews(): Array
+    public function findAllEnabledNews(): array
     {
         return $this->createQueryBuilder('n')
             ->where("n.enabled = :enabled")
             ->setParameter('enabled', true)
+            ->orderBy('n.dateCreated', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByYearAndMonth($year, $month): array
+    {
+        $qb = $this->createQueryBuilder('n');
+        return $qb->where('n.enabled = :enabled')
+            ->andWhere($qb->expr()->eq('YEAR(n.dateCreated)', ':year'))
+            ->andWhere($qb->expr()->eq('MONTH(n.dateCreated)', ':month'))
+            ->setParameter('enabled', true)
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
             ->orderBy('n.dateCreated', 'DESC')
             ->getQuery()
             ->getResult()

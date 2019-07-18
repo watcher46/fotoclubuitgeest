@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nieuws | Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            {% include 'news/_leftNav.html.twig' with {'news': news} %}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="row nieuwsPage">
+                {% if monthNews is empty %}
+                    <article>
+                        <header><h1>Nieuws</h1></header>
+                        <section><p> Er zijn geen nieuwsberichten voor deze periode.</p></section>
+                    </article>
+                {% else %}
+                    {% for newsItem in monthNews %}
+                        <article class="partialSize">
+                            <header>
+                                <h1>{{ newsItem.title }}</h1>
+                                <time datetime="{{ newsItem.dateCreated |date('Y-m-d') }}">
+                                    {{ newsItem.dateCreated |date('d-m-Y') }}
+                                </time>
+                            </header>
+                            <section>{{ newsItem.text|raw }}</section>
+                        </article>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

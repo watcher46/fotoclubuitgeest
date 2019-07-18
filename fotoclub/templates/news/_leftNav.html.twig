@@ -3,11 +3,11 @@
         <li>
             <span>Archief</span>
             <ul class="second">
-                {% for years, itemMonths in news %}
-                    <li><span>{{ years }}</span></li>
+                {% for year, itemMonths in news %}
+                    <li><span>{{ year }}</span></li>
                     <ul class="second">
-                        {% for months, items in itemMonths %}
-                            <li><a href="">{{ months }}</a></li>
+                        {% for month, items in itemMonths %}
+                            <li><a href="{{ path('monthNews', {year: year, month: month }) }}">{{ month|capitalize }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endfor %}

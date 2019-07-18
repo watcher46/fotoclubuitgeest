@@ -24,7 +24,7 @@ class GalleryController extends AbstractController
     /**
      * @Route("/galerij/{galleryId}", name="gallery_view")
      *
-     * @param int $galleryId
+     * @param mixed $galleryId
      * @return Response
      */
     public function viewGallery(int $galleryId): Response
