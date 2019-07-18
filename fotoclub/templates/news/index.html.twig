@@ -1,14 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello NewsController!{% endblock %}
+{% block title %}Nieuws | Fotoclub Uitgeest{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    {{ dump(news) }}
-</div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            {% include 'news/_leftNav.html.twig' with {'news': news} %}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="row nieuwsPage">
+                {% for years in news %}
+                    {% for months in years %}
+                        {% for newsItem in months %}
+                            <article class="partialSize">
+                                <header>
+                                    <h1>{{ newsItem.title }}</h1>
+                                    <time>{{ newsItem.dateCreated |date('d-m-Y') }}</time>
+                                </header>
+                                <section>{{ newsItem.text|raw }}</section>
+                            </article>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\News;
 use App\Repository\NewsRepository;
 
 class NewsService
@@ -15,8 +14,23 @@ class NewsService
         $this->newsRepo = $newsRepo;
     }
 
-    public function getNews(): Array
+    public function getNews(): array
     {
         return $this->newsRepo->findAllEnabledNews();
+    }
+
+    public function getGroupedNews(): array
+    {
+        $news = $this->getNews();
+
+        $return = [];
+        foreach ($news as $newsItem) {
+            $newsItemYear = $newsItem->getDateCreated()->format('Y');
+            $newsItemMonth = $newsItem->getDateCreated()->format('F');
+
+            $return[$newsItemYear][$newsItemMonth][] = $newsItem;
+        }
+
+        return $return;
     }
 }

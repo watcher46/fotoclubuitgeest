@@ -1,0 +1,17 @@
+<aside>
+    <ul>
+        <li>
+            <span>Archief</span>
+            <ul class="second">
+                {% for years, itemMonths in news %}
+                    <li><span>{{ years }}</span></li>
+                    <ul class="second">
+                        {% for months, items in itemMonths %}
+                            <li><a href="">{{ months }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</aside>

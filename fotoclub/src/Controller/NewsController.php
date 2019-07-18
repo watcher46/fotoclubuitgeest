@@ -21,7 +21,7 @@ class NewsController extends AbstractController
      */
     public function index()
     {
-        $news = $this->newsService->getNews();
+        $news = $this->newsService->getGroupedNews();
 
         return $this->render('news/index.html.twig', ['news' => $news]);
     }
