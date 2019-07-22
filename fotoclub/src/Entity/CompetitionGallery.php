@@ -40,6 +40,7 @@ class CompetitionGallery
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     private $images;
 
