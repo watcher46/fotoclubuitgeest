@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Agenda;
 use App\Entity\CompetitionGallery;
 use App\Entity\CompetitionGalleryImage;
 use App\Entity\CompetitionImage;
@@ -158,9 +159,9 @@ class MigrateDataController extends AbstractController
     }
 
     /**
-     * @Route("migrate/news", name="migrate_news")
+     * @Route("migrate/items", name="migrate_items")
      */
-    public function news(){
+    public function items(){
         die('only execute on migration day!');
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -168,6 +169,7 @@ class MigrateDataController extends AbstractController
         $connection = $entityManager->getConnection();
         //fetch data to be migrated
         $newsItems = $connection->fetchAll($this->getNewsQuery());
+        $agendaItems = $connection->fetchAll($this->getAgendaQuery());
 
         foreach($newsItems as $newsRow) {
             $newsItem = new News();
@@ -179,6 +181,20 @@ class MigrateDataController extends AbstractController
             $newsItem->setEnabled(($newsRow['status'] == 'actief')? true : false);
 
             $entityManager->persist($newsItem);
+            $entityManager->flush();
+        }
+
+        foreach($agendaItems as $agendaRow) {
+            $agendaItem = new Agenda();
+
+            $agendaItem->setTitle($agendaRow['titel']);
+            $agendaItem->setText($agendaRow['description']);
+            $agendaItem->setDateCreated(new \DateTime($agendaRow['datum']));
+            $agendaItem->setDateUpdated(new \DateTime($agendaRow['datum']));
+            $agendaItem->setEventDate(new \DateTime($agendaRow['datum']));
+            $agendaItem->setEnabled(($agendaRow['status'] == 'actief')? true : false);
+
+            $entityManager->persist($agendaItem);
             $entityManager->flush();
         }
     }
@@ -280,9 +296,16 @@ class MigrateDataController extends AbstractController
         return "
             SELECT *
             FROM `items`
-            WHERE `type_id` = '2' 
-            AND `status` = 'actief'
-            ORDER BY `datum` DESC
+            WHERE `type_id` = '2'
+        ";
+    }
+
+    protected function getAgendaQuery() :string
+    {
+        return "
+            SELECT *
+            FROM `items`
+            WHERE `type_id` = '3'
         ";
     }
 }
