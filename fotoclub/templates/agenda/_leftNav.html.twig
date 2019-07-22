@@ -1,0 +1,17 @@
+<aside>
+    <ul>
+        <li>
+            <span>Agenda</span>
+            <ul class="second">
+                {% for year, itemMonths in agenda %}
+                    <li><span>{{ year }}</span></li>
+                    <ul class="second">
+                        {% for month, items in itemMonths %}
+                            <li><a href="{{ path('monthEvents', {year: year, month: month }) }}">{{ month|capitalize }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</aside>

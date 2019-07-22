@@ -19,6 +19,47 @@ class AgendaRepository extends ServiceEntityRepository
         parent::__construct($registry, Agenda::class);
     }
 
+    /**
+     * @return Agenda[]|null
+     */
+    public function findAllEnabledEvents(): array
+    {
+        return $this->createQueryBuilder('n')
+            ->where("n.enabled = :enabled")
+            ->setParameter('enabled', true)
+            ->orderBy('n.eventDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllFutureEvents(): array
+    {
+        return $this->createQueryBuilder('n')
+            ->where("n.enabled = :enabled")
+            ->andWhere('n.eventDate >= NOW()')
+            ->setParameter('enabled', true)
+            ->orderBy('n.eventDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByYearAndMonth($year, $month): array
+    {
+        $qb = $this->createQueryBuilder('n');
+        return $qb->where('n.enabled = :enabled')
+            ->andWhere($qb->expr()->eq('YEAR(n.eventDate)', ':year'))
+            ->andWhere($qb->expr()->eq('MONTH(n.eventDate)', ':month'))
+            ->setParameter('enabled', true)
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->orderBy('n.eventDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Agenda[] Returns an array of Agenda objects
     //  */

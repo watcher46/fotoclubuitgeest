@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Agenda | Fotoclub Uitgeest{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            {% include 'agenda/_leftNav.html.twig' with {'agenda': events} %}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="row nieuwsPage">
+                {% if monthEvents is empty %}
+                    <article>
+                        <header><h1>Agenda</h1></header>
+                        <section><p>Op dit moment staat er niets op de agenda voor de komende periode.</p></section>
+                    </article>
+                {% endif %}
+
+                {% for agendaItem in monthEvents %}
+                    <article class="partialSize">
+                        <header>
+                            <h1>{{ agendaItem.title }}</h1>
+                            <time datetime="{{ agendaItem.eventDate |date('Y-m-d') }}">
+                                {{ agendaItem.eventDate |date('d-m-Y') }}
+                            </time>
+                        </header>
+                        <section>{{ agendaItem.text|raw }}</section>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
