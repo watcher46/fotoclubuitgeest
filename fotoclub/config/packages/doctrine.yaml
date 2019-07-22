@@ -32,4 +32,5 @@ doctrine:
                 rand: DoctrineExtensions\Query\Mysql\Rand
             string_functions:
                 MONTH: DoctrineExtensions\Query\Mysql\Month
+                NOW: DoctrineExtensions\Query\Mysql\Now
                 YEAR: DoctrineExtensions\Query\Mysql\Year
