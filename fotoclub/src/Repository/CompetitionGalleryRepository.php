@@ -52,16 +52,6 @@ class CompetitionGalleryRepository extends ServiceEntityRepository
     }
     */
 
-    public function findAllActive()
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.active = 1')
-            ->orderBy('c.date_created', 'DESC')
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
-    }
-
     public function findAllActiveInSeason(string $seasonStart, string $seasonEnd, string $orderByColumn = 'id', string $order = 'DESC')
     {
         if(!in_array($orderByColumn, self::SUPPORTED_ORDER_BY_COLUMN)) {

@@ -11,7 +11,6 @@ class CompetitionService
     const SEASON_START_MONTH = 9;
     const SEASON_END_MONTH = 5;
 
-
     /** @var CompetitionGalleryRepository */
     protected $competitionRepo;
 
@@ -23,12 +22,6 @@ class CompetitionService
         $this->competitionRepo = $competitionRepo;
         $this->competitionImageRepo = $competitionImageRepo;
     }
-
-    public function getAllCompetitions()
-    {
-
-    }
-
 
     public function getAllCompetitionsInCurrentSeason()
     {
