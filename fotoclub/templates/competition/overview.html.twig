@@ -9,9 +9,21 @@
         </div>
         <div class="col-xs-12 col-sm-9">
             {% for competition in competitions %}
-                <div style="background: white;">
-                    <h2>{{ competition.name }}</h2>
-                </div>
+                {% set firstImage = competition.images[0].image %}
+                <article class="row galerij">
+                    <header class="col-xs-8 pull-right">
+                        <h1><a class="text-right" href="{{ path('competition_details', { competitionId: competition.id }) }}" title="Bekijk de competitie">{{ competition.name }}</a></h1>
+                        <span class="small"><em>{{ competition.images|length }} foto's</em></span>
+                        <span class="user-content">{{ competition.description|raw }}</span>
+                    </header>
+                    <section class="col-xs-3 pull-left">
+                        <div class="imageHolder">
+                            <a href="{{ path('competition_details', { competitionId: competition.id }) }}" title="Bekijk de competitie">
+                                <img title="firstImage.title" src="{{ asset('/assets/images/original/' ~ firstImage.filename) | imagine_filter('gallery_thumb') }}">
+                            </a>
+                        </div>
+                    </section>
+                </article>
             {% endfor %}
         </div>
     </div>
