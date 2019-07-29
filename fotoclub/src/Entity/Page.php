@@ -47,14 +47,19 @@ class Page
     private $homepage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Navigation", inversedBy="pages")
-     */
-    private $navigationItem;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $enabled;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Navigation", inversedBy="pages")
+     */
+    private $navigation;
+
+    public function __toString()
+    {
+        return $this->title;
+    }
 
     public function getId(): ?int
     {
@@ -169,18 +174,6 @@ class Page
         return $this;
     }
 
-    public function getNavigationItem(): ?Navigation
-    {
-        return $this->navigationItem;
-    }
-
-    public function setNavigationItem(?Navigation $navigationItem): self
-    {
-        $this->navigationItem = $navigationItem;
-
-        return $this;
-    }
-
     public function getEnabled(): ?bool
     {
         return $this->enabled;
@@ -189,6 +182,18 @@ class Page
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getNavigation(): ?Navigation
+    {
+        return $this->navigation;
+    }
+
+    public function setNavigation(?Navigation $navigation): self
+    {
+        $this->navigation = $navigation;
 
         return $this;
     }
