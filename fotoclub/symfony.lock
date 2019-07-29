@@ -182,12 +182,6 @@
     "swiftmailer/swiftmailer": {
         "version": "v6.1.3"
     },
-    "symfony-cmf/routing": {
-        "version": "2.1.0"
-    },
-    "symfony-cmf/routing-bundle": {
-        "version": "2.1.1"
-    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
