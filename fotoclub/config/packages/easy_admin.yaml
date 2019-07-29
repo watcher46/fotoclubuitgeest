@@ -1,4 +1,5 @@
 easy_admin:
+    site_name: 'Fotoclub Uitgeest beheer'
     design:
         form_theme:
             - '@EasyAdmin/form/bootstrap_4.html.twig'
@@ -34,3 +35,24 @@ easy_admin:
             class: App\Entity\Image
         Member:
             class: App\Entity\Member
+        Navigation:
+            class: App\Entity\Navigation
+            form:
+                fields:
+                    - 'title'
+                    - { property: 'pages', label: 'Paginas', type_options: { by_reference: false } }
+        Page:
+            class: App\Entity\Page
+            list:
+                fields:
+                    - 'title'
+                    - 'dateCreated'
+                    - 'enabled'
+                    - 'homepage'
+            form:
+                fields:
+                    - 'title'
+                    - 'text'
+                    - 'enabled'
+                    - 'navigation'
+                    - 'homepage'
