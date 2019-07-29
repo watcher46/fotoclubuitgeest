@@ -22,4 +22,9 @@ class PageService
 
         return $this->pageRepo->findOneBy(['title' => $name, 'enabled' => true]);
     }
+
+    public function findHomePage()
+    {
+        return $this->pageRepo->findOneBy(['homepage' => true, 'enabled' => true]);
+    }
 }

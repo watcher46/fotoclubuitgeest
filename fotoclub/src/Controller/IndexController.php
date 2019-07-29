@@ -2,19 +2,23 @@
 
 namespace App\Controller;
 
+use App\Service\GalleryService;
+use App\Service\PageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\GalleryService;
 
 class IndexController extends AbstractController
 {
     /** @var GalleryService */
     protected $galleryService;
 
-    public function __construct(GalleryService $galleryService)
+    protected $pageService;
+
+    public function __construct(GalleryService $galleryService, PageService $pageService)
     {
         $this->galleryService = $galleryService;
+        $this->pageService = $pageService;
     }
 
     /**
@@ -24,9 +28,11 @@ class IndexController extends AbstractController
     public function index()
     {
         $images = $this->galleryService->getLastCreatedImages(4);
+        $homepagePage = $this->pageService->findHomePage();
 
         return $this->render('index.html.twig', [
             'images' => $images,
+            'homepage' => $homepagePage,
         ]);
     }
 }
