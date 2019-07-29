@@ -11,12 +11,11 @@ easy_admin:
                 fields:
                     - 'id'
                     - 'name'
-                    - 'description'
                     - 'member.name'
             edit:
                 fields:
                     - 'name'
-                    - 'description'
+                    - { property: 'description',  type: 'fos_ckeditor'}
                     - 'active'
                     - 'member'
                     - 'dateCreated'
@@ -27,7 +26,7 @@ easy_admin:
             edit:
                 fields:
                     - 'name'
-                    - 'description'
+                    - { property: 'description',  type: 'fos_ckeditor'}
                     - 'dateCreated'
                     - 'active'
                     - { property: 'images', label: 'Images', type: 'collection', type_options: { entry_type: 'App\Form\CompetitionImages', by_reference: false, block_name: 'competition_images' } }
@@ -52,7 +51,7 @@ easy_admin:
             form:
                 fields:
                     - 'title'
-                    - 'text'
+                    - { property: 'text',  type: 'fos_ckeditor'}
                     - 'enabled'
-                    - 'navigation'
                     - 'homepage'
+                    - 'navigation'
