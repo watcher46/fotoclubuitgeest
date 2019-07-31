@@ -29,6 +29,11 @@ class Image
     private $dateCreated;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateChanged;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $active;
@@ -100,6 +105,18 @@ class Image
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    public function getDateChanged(): ?\DateTimeInterface
+    {
+        return $this->dateChanged;
+    }
+
+    public function setDateChanged(\DateTimeInterface $dateChanged): self
+    {
+        $this->dateChanged = $dateChanged;
 
         return $this;
     }
