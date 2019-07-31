@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'nl_NL'
+    locale: 'en'
 
 
 services:
@@ -31,3 +31,24 @@ services:
     App\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main }
+
+    App\Admin\PageAdmin:
+        arguments: [~, App\Entity\Page, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Paginas', label: Pagina }
+    App\Admin\NavigationAdmin:
+        arguments: [~, App\Entity\Navigation, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Paginas', label: Navigatie }
+    App\Admin\GalleryAdmin:
+        arguments: [~, App\Entity\Gallery, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Galerij', label: Galerijen }
+    App\Admin\MemberAdmin:
+        arguments: [~, App\Entity\Member, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Leden', label: Leden }
+    App\Admin\ImageAdmin:
+        arguments: [~, App\Entity\Image, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Galerij', label: Fotos }
