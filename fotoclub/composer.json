@@ -6,8 +6,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "beberlei/doctrineextensions": "^1.2",
-        "easycorp/easyadmin-bundle": "^2.1",
-        "friendsofsymfony/ckeditor-bundle": "^2.1",
         "knplabs/knp-menu-bundle": "^2.2",
         "liip/imagine-bundle": "^2.1",
         "mopa/bootstrap-bundle": "^3.3",
@@ -83,7 +81,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "4.3.*"
         }
     }
