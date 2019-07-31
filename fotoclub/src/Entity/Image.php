@@ -5,12 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Image
 {
+    const UPLOAD_DIR = 'assets/images/original';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -68,6 +72,11 @@ class Image
      * @ORM\OneToMany(targetEntity="App\Entity\Page", mappedBy="image")
      */
     private $pages;
+
+    /**
+     * Unmapped property to handle file uploads
+     */
+    private $file;
 
     public function __construct()
     {
@@ -238,5 +247,68 @@ class Image
         }
 
         return $this;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Manages the copying of the file to the relevant place on the server
+     */
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        // we use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+        $uploadDir = realpath(__DIR__ . '/../../public/'. self::UPLOAD_DIR);
+        $name = sha1($this->getFile()->getClientOriginalName() . microtime());
+        $filename = $name . '.' . $this->getFile()->getClientOriginalExtension();
+
+        // move takes the target directory and target filename as params
+        $this->getFile()->move(
+            $uploadDir,
+            $filename
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->setFileName($filename);
+
+        // clean up the file property as you won't need it anymore
+        $this->setFile(null);
+    }
+
+    /**
+     * Lifecycle callback to upload the file to the server.
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function lifecycleFileUpload()
+    {
+        $this->upload();
+    }
+
+    /**
+     * Updates the hash value to force the preUpdate and postUpdate events to fire.
+     */
+    public function refreshUpdated()
+    {
+        $this->setDateChanged(new \DateTime());
     }
 }
