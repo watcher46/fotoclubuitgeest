@@ -87,6 +87,7 @@ class MigrateDataController extends AbstractController
                     $newImage->setName($image['name']);
                     $newImage->setFileName($image['file_name']);
                     $newImage->setDateCreated(new \DateTime($image['date_created']));
+                    $newImage->setDateChanged(new \DateTime($image['date_created']));
                     $newImage->setActive(true);
                     $newImage->setMember($newMember);
                     $newImage->setSortOrder($i);
