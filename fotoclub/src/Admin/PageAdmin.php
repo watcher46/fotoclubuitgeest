@@ -33,6 +33,17 @@ final class PageAdmin extends AbstractAdmin
         ;
     }
 
+    public function prePersist($page)
+    {
+        $page->setDateCreated(new \DateTime('now'));
+        $page->setDateUpdated(new \DateTime('now'));
+    }
+
+    public function preUpdate($page)
+    {
+        $page->setDateUpdated(new \DateTime('now'));
+    }
+
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('title');

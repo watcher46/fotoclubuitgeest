@@ -158,6 +158,17 @@ class Gallery
         return $this;
     }
 
+    public function addImages(Collection $images): self
+    {
+        if (empty($images)) { return $this; }
+
+        foreach($images as $image) {
+            $this->addImage($image);
+        }
+
+        return $this;
+    }
+
     public function removeImage(Image $image): self
     {
         if ($this->images->contains($image)) {
