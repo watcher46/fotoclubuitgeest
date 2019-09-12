@@ -23,6 +23,11 @@ class CompetitionService
         $this->competitionImageRepo = $competitionImageRepo;
     }
 
+    public function findAllCompetitions()
+    {
+        return $this->competitionRepo->findAll();
+    }
+
     public function getAllCompetitionsInCurrentSeason()
     {
         $currentSeason = $this->getCurrentSeasonDates();

@@ -35,20 +35,30 @@ services:
     App\Admin\PageAdmin:
         arguments: [~, App\Entity\Page, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Paginas', label: Pagina }
+            - { name: sonata.admin, manager_type: orm, label: Pagina }
     App\Admin\NavigationAdmin:
         arguments: [~, App\Entity\Navigation, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Paginas', label: Navigatie }
+            - { name: sonata.admin, manager_type: orm, label: Navigatie }
+    App\Admin\CompetitionGalleryAdmin:
+        arguments: [~, App\Entity\CompetitionGallery, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Competities }
     App\Admin\GalleryAdmin:
         arguments: [~, App\Entity\Gallery, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Galerij', label: Galerijen }
-    App\Admin\MemberAdmin:
-        arguments: [~, App\Entity\Member, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Leden', label: Leden }
+            - { name: sonata.admin, manager_type: orm, label: Galerijen }
     App\Admin\ImageAdmin:
         arguments: [~, App\Entity\Image, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Galerij', label: Fotos }
+            - { name: sonata.admin, manager_type: orm, label: Fotos }
+    App\Admin\MemberAdmin:
+        arguments: [~, App\Entity\Member, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Leden }
+
+    sonata.admin.competition_images:
+        class: App\Admin\CompetitionImageAdmin
+        arguments: [~, App\Entity\CompetitionImage, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Competitie Images }

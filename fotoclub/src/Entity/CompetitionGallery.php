@@ -39,7 +39,7 @@ class CompetitionGallery
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery")
+     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery", cascade={"persist"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     private $images;
@@ -47,6 +47,11 @@ class CompetitionGallery
     public function __construct()
     {
         $this->images = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -117,6 +122,16 @@ class CompetitionGallery
             $images->setCompetitionGallery($this);
         }
 
+        return $this;
+    }
+
+    public function setImages(ArrayCollection $images): self
+    {
+        if(count($images) > 0) {
+            foreach($images as $image) {
+                $this->addImages($image);
+            }
+        }
         return $this;
     }
 

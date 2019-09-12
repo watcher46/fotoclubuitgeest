@@ -1,22 +1,25 @@
 <?php
 namespace App\Admin;
 
+use App\Entity\Gallery;
 use App\Entity\Image;
 use App\Entity\Member;
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 final class GalleryAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
+
         $formMapper->add('name', TextType::class)
             ->add('description', SimpleFormatterType::class, [
                 'format' => 'richhtml'
@@ -34,6 +37,7 @@ final class GalleryAdmin extends AbstractAdmin
                 'multiple' => true,
                 'by_reference' => false,
             ],[
+                'sortable' => 'sortOrder',
                 'help' => 'Kies een afbeelding die nog niet gekoppeld is aan een gallerij. Een afbeelding kan maar aan 1 gallerij gekoppeld worden. Wanneer je dit overschrijft vervalt de oude referentie.'
             ])
         ;

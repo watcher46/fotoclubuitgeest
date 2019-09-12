@@ -114,18 +114,6 @@ class Page
         return $this;
     }
 
-    public function getType(): ?PageType
-    {
-        return $this->type;
-    }
-
-    public function setType(PageType $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getText(): ?string
     {
         return $this->text;

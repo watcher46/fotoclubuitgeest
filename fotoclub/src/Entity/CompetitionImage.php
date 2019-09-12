@@ -22,7 +22,7 @@ class CompetitionImage
     private $sortOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CompetitionGallery", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CompetitionGallery", inversedBy="images", cascade={"persist"})
      * @ORM\JoinColumn(name="competition_gallery_id", referencedColumnName="id", nullable=false)
      */
     private $competitionGallery;
@@ -32,6 +32,11 @@ class CompetitionImage
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=false)
      */
     private $image;
+
+    public function __toString(): string
+    {
+        return $this->image->getName() . ' - ' . $this->image->getMember()->getName();
+    }
 
     public function getId(): ?int
     {

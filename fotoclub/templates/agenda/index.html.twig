@@ -22,8 +22,8 @@
                             <article class="partialSize">
                                 <header>
                                     <h1>{{ agendaItem.title }}</h1>
-                                    <time datetime="{{ agendaItem.dateCreated |date('Y-m-d') }}">
-                                        {{ agendaItem.dateCreated |date('d-m-Y') }}
+                                    <time datetime="{{ agendaItem.eventDate |date('Y-m-d') }}">
+                                        {{ agendaItem.eventDate |date('d-m-Y') }}
                                     </time>
                                 </header>
                                 <section>{{ agendaItem.text|raw }}</section>
