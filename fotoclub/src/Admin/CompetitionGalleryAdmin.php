@@ -2,22 +2,22 @@
 namespace App\Admin;
 
 use App\Entity\CompetitionImage;
-use mysql_xdevapi\Collection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\AdminType;
-use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\CollectionType;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Knp\Menu\ItemInterface as MenuItemInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
 
 final class CompetitionGalleryAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'dateCreated',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('name', TextType::class)
@@ -46,7 +46,16 @@ final class CompetitionGalleryAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name')
-            ->add('member');
+        $listMapper
+            ->addIdentifier('name', null, [
+                'label' => 'Competitie',
+            ])
+            ->add('countImages', null, [
+                'label' => 'Aantal afbeeldingen',
+            ])
+            ->add('active', null, [
+                'label' => 'Actief',
+                'editable' => true,
+            ]);
     }
 }

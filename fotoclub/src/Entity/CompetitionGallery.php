@@ -147,4 +147,12 @@ class CompetitionGallery
 
         return $this;
     }
+
+    /**
+     * virtual property
+     */
+    public function countImages(): int
+    {
+        return count($this->images);
+    }
 }
