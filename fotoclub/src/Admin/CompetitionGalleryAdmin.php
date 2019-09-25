@@ -20,15 +20,20 @@ final class CompetitionGalleryAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('name', TextType::class)
+        $formMapper->add('name', TextType::class, [
+            'label' => 'Titel',
+        ])
             ->add('description', SimpleFormatterType::class, [
+                'label' => 'Beschrijving',
                 'format' => 'richhtml'
             ])
             ->add('active', CheckboxType::class, [
+                'label' => 'Actief',
                 'required' => false,
                 'value' => 1,
             ])
             ->add('images', CollectionType::class, [
+                'label' => 'Afbeeldingen',
                 'modifiable' => true,
                 'by_reference' => false,
             ], [

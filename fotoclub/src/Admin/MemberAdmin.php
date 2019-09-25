@@ -40,9 +40,17 @@ final class MemberAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name');
-        $listMapper->add('memberNumber')
-            ->add('active')
+        $listMapper->addIdentifier('name', null, [
+            'label' => 'Naam',
+        ]);
+        $listMapper
+            ->add('memberNumber', null, [
+                'label' => 'Lid nummer',
+            ])
+            ->add('active', null, [
+                'label' => 'Actief',
+                'editable' => true,
+            ])
         ;
     }
 }

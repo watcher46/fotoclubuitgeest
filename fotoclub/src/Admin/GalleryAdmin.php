@@ -17,9 +17,14 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 final class GalleryAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'dateCreated',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
-
         $formMapper->add('name', TextType::class)
             ->add('description', SimpleFormatterType::class, [
                 'format' => 'richhtml'
@@ -58,13 +63,23 @@ final class GalleryAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('name');
-        $datagridMapper->add('member');
+        $datagridMapper->add('member', null, [
+            'label' => 'Lid',
+        ]);
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name')
-            ->add('member');
+        $listMapper
+            ->addIdentifier('name', null, [
+                'label' => 'Gallerij'
+            ])
+            ->add('member', null, [
+                'label' => 'Lid',
+            ])
+            ->add('active', null, [
+                'label' => 'Actief',
+                'editable' => true,
+            ]);
     }
 }

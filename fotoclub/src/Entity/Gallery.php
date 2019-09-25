@@ -158,9 +158,13 @@ class Gallery
         return $this;
     }
 
-    public function addImages(Collection $images): self
+    public function addImages($images): self
     {
         if (empty($images)) { return $this; }
+
+        if(!is_iterable($images)) {
+            $images = [$images];
+        }
 
         foreach($images as $image) {
             $this->addImage($image);

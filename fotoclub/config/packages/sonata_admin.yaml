@@ -1,6 +1,10 @@
 sonata_admin:
     title: 'Fotoclub Uitgeest'
     dashboard:
+        groups:
+            default:
+                keep_open: true
+                label: Menu
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
     assets:

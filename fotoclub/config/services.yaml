@@ -61,4 +61,4 @@ services:
         class: App\Admin\CompetitionImageAdmin
         arguments: [~, App\Entity\CompetitionImage, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Competitie Images }
+            - { name: sonata.admin, manager_type: orm, label: Competitie Images, show_in_dashboard: false }
