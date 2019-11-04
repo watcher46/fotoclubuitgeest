@@ -6,6 +6,10 @@ use App\Entity\Agenda;
 use App\Entity\CompetitionGallery;
 use App\Entity\CompetitionGalleryImage;
 use App\Entity\CompetitionImage;
+use App\Entity\Page;
+use DateTime;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Member;
@@ -17,6 +21,7 @@ use App\Repository\ImageRepository;
 class MigrateDataController extends AbstractController
 {
     protected $imageRepository;
+
     public function __construct(ImageRepository $imageRepository)
     {
         $this->imageRepository = $imageRepository;
@@ -27,10 +32,10 @@ class MigrateDataController extends AbstractController
      */
     public function index()
     {
-        die('only run this on migration-day');
+        //die('only run this on migration-day');
         $entityManager = $this->getDoctrine()->getManager();
 
-        /** @var \Doctrine\DBAL\Connection $connection */
+        /** @var Connection $connection */
         $connection = $entityManager->getConnection();
         //fetch data to be migrated
         $membersWithGalleryIds = $connection->fetchAll($this->getMembersWithGalleriesQuery());
@@ -70,8 +75,8 @@ class MigrateDataController extends AbstractController
                     $newGallery = new Gallery();
                     $newGallery->setName($oldGallery['name']);
                     $newGallery->setDescription($oldGallery['description']);
-                    $newGallery->setDateCreated(new \DateTime($oldGallery['date_created']));
-                    $newGallery->setDateChanged(new \DateTime($oldGallery['date_changed']));
+                    $newGallery->setDateCreated(new DateTime($oldGallery['date_created']));
+                    $newGallery->setDateChanged(new DateTime($oldGallery['date_changed']));
                     $newGallery->setActive($oldGallery['active']);
                     $newGallery->setMember($newMember);
                 }
@@ -86,8 +91,8 @@ class MigrateDataController extends AbstractController
                     $newImage = new Image();
                     $newImage->setName($image['name']);
                     $newImage->setFileName($image['file_name']);
-                    $newImage->setDateCreated(new \DateTime($image['date_created']));
-                    $newImage->setDateChanged(new \DateTime($image['date_created']));
+                    $newImage->setDateCreated(new DateTime($image['date_created']));
+                    $newImage->setDateChanged(new DateTime($image['date_created']));
                     $newImage->setActive(true);
                     $newImage->setMember($newMember);
                     $newImage->setSortOrder($i);
@@ -119,7 +124,7 @@ class MigrateDataController extends AbstractController
             $newGallery->setName($competition['name']);
             $newGallery->setDescription($competition['description']);
             $newGallery->setActive($competition['active']);
-            $newGallery->setDateCreated(new \DateTime($competition['date_created']));
+            $newGallery->setDateCreated(new DateTime($competition['date_created']));
 
             $entityManager->persist($newGallery);
 
@@ -163,10 +168,10 @@ class MigrateDataController extends AbstractController
      * @Route("migrate/items", name="migrate_items")
      */
     public function items(){
-        die('only execute on migration day!');
+        //die('only execute on migration day!');
         $entityManager = $this->getDoctrine()->getManager();
 
-        /** @var \Doctrine\DBAL\Connection $connection */
+        /** @var Connection $connection */
         $connection = $entityManager->getConnection();
         //fetch data to be migrated
         $newsItems = $connection->fetchAll($this->getNewsQuery());
@@ -177,8 +182,8 @@ class MigrateDataController extends AbstractController
 
             $newsItem->setTitle($newsRow['titel']);
             $newsItem->setText($newsRow['description']);
-            $newsItem->setDateCreated(new \DateTime($newsRow['datum']));
-            $newsItem->setDateUpdated(new \DateTime($newsRow['datum']));
+            $newsItem->setDateCreated(new DateTime($newsRow['datum']));
+            $newsItem->setDateUpdated(new DateTime($newsRow['datum']));
             $newsItem->setEnabled(($newsRow['status'] == 'actief')? true : false);
 
             $entityManager->persist($newsItem);
@@ -190,9 +195,9 @@ class MigrateDataController extends AbstractController
 
             $agendaItem->setTitle($agendaRow['titel']);
             $agendaItem->setText($agendaRow['description']);
-            $agendaItem->setDateCreated(new \DateTime($agendaRow['datum']));
-            $agendaItem->setDateUpdated(new \DateTime($agendaRow['datum']));
-            $agendaItem->setEventDate(new \DateTime($agendaRow['datum']));
+            $agendaItem->setDateCreated(new DateTime($agendaRow['datum']));
+            $agendaItem->setDateUpdated(new DateTime($agendaRow['datum']));
+            $agendaItem->setEventDate(new DateTime($agendaRow['datum']));
             $agendaItem->setEnabled(($agendaRow['status'] == 'actief')? true : false);
 
             $entityManager->persist($agendaItem);
@@ -200,6 +205,83 @@ class MigrateDataController extends AbstractController
         }
     }
 
+    /**
+     * @Route("migrate/pages", name="migrate_pages")
+     */
+    public function migratePages()
+    {
+        //die('only execute on migration day!');
+        $entityManager = $this->getDoctrine()->getManager();
+
+        /** @var Connection $connection */
+        $connection = $entityManager->getConnection();
+        //fetch data to be migrated
+
+        $pageItems = $connection->fetchAll($this->getPagesQuery());
+
+        foreach($pageItems as $pageRow) {
+            $page = new Page();
+
+            $page->setTitle($pageRow['titel']);
+            $page->setText($pageRow['description']);
+            $page->setDateCreated(new DateTime($pageRow['datum']));
+            $page->setDateUpdated(new DateTime($pageRow['datum']));
+            $page->setHomepage(false);
+            if($pageRow['id'] == '6') {
+                $page->setHomepage(true);
+            }
+
+            $page->setEnabled(($pageRow['status'] == 'actief')? true : false);
+
+            if (! empty($pageRow['image'])) {
+                $newImage = $this->findNewImageFromOldImageId($pageRow['image'], $connection);
+                if($newImage) {
+                    $page->setImage($newImage);
+                }
+            }
+
+            $entityManager->persist($page);
+            $entityManager->flush();
+        }
+    }
+
+    protected function findNewImageFromOldImageId(int $imageId, Connection $connection)
+    {
+        $sql = "SELECT * FROM `images` WHERE `id` = {$imageId}";
+        $oldImage = $connection->fetchAssoc($sql);
+
+        if(! $oldImage) {
+            return false;
+        }
+
+        return $this->findNewImageByOldName($oldImage);
+    }
+
+    protected function findNewImageByOldName(array $oldImage): ?Image
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $imageRepo = $this->getDoctrine()->getRepository(Image::class);
+        $memberRepo = $this->getDoctrine()->getRepository(Member::class);
+        $newImage = $imageRepo->findOneBy(['fileName' => $oldImage['naam_original']]);
+        $placeholderMember = $memberRepo->find(9);
+
+        if(!$newImage) {
+            //old image exists, but new one does not (probably not linked to any member)
+            $newImage = new Image();
+            $newImage->setName($oldImage['naam']);
+            $newImage->setFileName($oldImage['naam_original']);
+            $newImage->setDateCreated(new DateTime($oldImage['datum']));
+            $newImage->setDateChanged(new DateTime($oldImage['datum']));
+            $newImage->setActive(true);
+            $newImage->setMember($placeholderMember);
+            $newImage->setSortOrder(0);
+
+            $entityManager->persist($newImage);
+            $entityManager->flush();
+        }
+
+        return $newImage;
+    }
 
     protected function parseMembersWithGalleries(array $result) :array
     {
@@ -307,6 +389,15 @@ class MigrateDataController extends AbstractController
             SELECT *
             FROM `items`
             WHERE `type_id` = '3'
+        ";
+    }
+
+    protected function getPagesQuery(): string
+    {
+        return "
+            SELECT *
+            FROM `items`
+            WHERE `type_id` = '1'
         ";
     }
 }

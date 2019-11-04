@@ -14,7 +14,7 @@
                         <span class="user-content">{{ homepage.text|raw }}</span>
                     </section>
                     <div class="image col-sm-4 col-md-4 col-lg-4">
-                        homepage.image
+                        <img class="center-block img-responsive" src="{{ asset('/assets/images/original/' ~ homepage.image.filename) | imagine_filter('homepage_thumb') }}" title="{{ homepage.image.name }}"/>
                     </div>
                 </div>
             </article>
