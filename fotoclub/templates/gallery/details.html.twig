@@ -21,6 +21,7 @@
                                 <a class="text-right"
                                    href="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_full') }}"
                                    data-lightbox="Galerij {{ gallery.name|lower|ucwords }}"
+                                   title="{{ image.name }}"
                                 >
                                     <img class="img-responsive center-block"
                                          src="{{ asset('/assets/images/original/' ~ image.filename) | imagine_filter('gallery_thumb_med') }}"

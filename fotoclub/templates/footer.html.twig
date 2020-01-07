@@ -1,15 +1,9 @@
 <footer class="footer">
-    <div class="col-lg-12 navbar navbar-fotoclub">
+    <nav class="col-lg-12 navbar navbar-fotoclub">
         <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li><a class="footerLink" href="">Home</a></li>
-                <li><a class="footerLink" href="">Galerij</a></li>
-                <li><a class="footerLink" href="">Nieuws</a></li>
-                <li><a class="footerLink" href="">Agenda</a></li>
-                <li><a class="footerLink" href="">Contact</a></li>
-                <li><a class="footerLink" href="">Info</a></li>
-                <li><a class="footerLink" href="">Links</a></li>
-            </ul>
+            <div id="navbar">
+                {{ mopa_bootstrap_menu('main', {'automenu': 'navbar'}) }}
+            </div>
         </div>
-    </div>
+    </nav>
 </footer>

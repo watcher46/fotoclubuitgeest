@@ -54,10 +54,12 @@ final class ImageAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('name');
+        $datagridMapper->add('member.name');
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('name');
+        $listMapper->add('member');
     }
 }

@@ -36,6 +36,10 @@ services:
         arguments: [~, App\Entity\Page, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Pagina }
+    App\Admin\AgendaAdmin:
+        arguments: [~, App\Entity\Agenda, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Agenda }
     App\Admin\NavigationAdmin:
         arguments: [~, App\Entity\Navigation, ~]
         tags:
