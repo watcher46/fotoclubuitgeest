@@ -75,6 +75,11 @@ class News
         return $this->dateCreated;
     }
 
+    public function getFormattedCreatedDate(): string
+    {
+        return $this->dateCreated->format('d-m-Y');
+    }
+
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;

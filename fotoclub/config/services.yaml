@@ -40,6 +40,10 @@ services:
         arguments: [~, App\Entity\Agenda, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Agenda }
+    App\Admin\NewsAdmin:
+        arguments: [~, App\Entity\News, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Nieuws }
     App\Admin\NavigationAdmin:
         arguments: [~, App\Entity\Navigation, ~]
         tags:
