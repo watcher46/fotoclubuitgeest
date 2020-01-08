@@ -38,7 +38,7 @@ final class AgendaAdmin extends AbstractAdmin
             ])
             ->add('eventDate', DatePickerType::class, [
                 'required' => true,
-                'format' => 'd-M-Y',
+                'dp_use_current' => false,
             ])
             ->add('enabled', CheckboxType::class, [
                 'required' => false,
