@@ -104,6 +104,11 @@ class Agenda
         return $this->eventDate;
     }
 
+    public function getFormattedEventDate(): string
+    {
+        return $this->eventDate->format('d-m-Y');
+    }
+
     public function setEventDate(\DateTimeInterface $eventDate): self
     {
         $this->eventDate = $eventDate;

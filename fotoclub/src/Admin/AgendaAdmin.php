@@ -1,20 +1,15 @@
 <?php
 namespace App\Admin;
 
-use App\Entity\Image;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\AdminBundle\Form\Type\Filter\DateTimeType;
 use Sonata\Form\Type\DatePickerType;
-use Sonata\Form\Type\DateTimePickerType;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use App\Entity\Navigation;
 
 final class AgendaAdmin extends AbstractAdmin
 {
@@ -66,8 +61,10 @@ final class AgendaAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('title');
-        $listMapper->add('eventDate')
-            ->add('enabled')
-        ;
+        $listMapper->add('eventDate', DateTimeType::class, [
+            'format' => 'd-m-Y',
+            'code' => 'getFormattedEventDate'
+        ]);
+        $listMapper->add('enabled');
     }
 }
