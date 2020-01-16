@@ -35,7 +35,7 @@ final class CompetitionGalleryAdmin extends AbstractAdmin
             ->add('images', CollectionType::class, [
                 'label' => 'Afbeeldingen',
                 'modifiable' => true,
-                'by_reference' => false,
+                'by_reference' => true,
             ], [
                 'inline' => 'table',
                 'edit' => 'inline',
@@ -47,6 +47,14 @@ final class CompetitionGalleryAdmin extends AbstractAdmin
     {
         $object->setImages($object->getImages());
         $object->setDateCreated(new \Datetime('now'));
+    }
+
+    public function preUpdate($object)
+    {
+        /** @var CompetitionImage $image */
+        foreach($object->getImages() as $image) {
+            $image->setCompetitionGallery($object);
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper)

@@ -39,7 +39,7 @@ class CompetitionGallery
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\CompetitionImage", mappedBy="competitionGallery", cascade={ "persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     private $images;
@@ -125,7 +125,7 @@ class CompetitionGallery
         return $this;
     }
 
-    public function setImages(ArrayCollection $images): self
+    public function setImages(Collection $images): self
     {
         if(count($images) > 0) {
             foreach($images as $image) {
@@ -140,9 +140,7 @@ class CompetitionGallery
         if ($this->images->contains($images)) {
             $this->images->removeElement($images);
             // set the owning side to null (unless already changed)
-            if ($images->getCompetitionGallery() === $this) {
-                $images->setCompetitionGallery(null);
-            }
+            $images->setImage(null);
         }
 
         return $this;
