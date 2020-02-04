@@ -1,6 +1,6 @@
 <header>
     <div class="col-xs-12 imageContainer">
-        <h1 class="title">Fotoclub Uitgeest</h1>
+        <h1 class="title"><a class="logo" href="{{ path('home') }}">Fotoclub Uitgeest</a></h1>
         <div id="slider" style="display:none;">
             {% for headerImage in headerImages %}
                 <img src="{{ asset('assets/images/header/' ~ headerImage) }}" alt="" />

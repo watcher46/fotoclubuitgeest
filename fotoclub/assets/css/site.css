@@ -21,12 +21,23 @@ header h1 {
 
 header .title {
     margin-bottom: 0px;
-    padding: 5px 0px;
+    padding: 0px 0px;
     color: white;
-    font-family:Tahoma;
-    font-size:26px;
-    letter-spacing:10px;
-    line-height:30px;
+    font-family: Tahoma;
+    font-size: 26px;
+    letter-spacing: 10px;
+    line-height: 78px;
+    text-align: center;
+}
+
+header .title .logo {
+    background: url(logo.svg) no-repeat left;
+    background-size: auto;
+    color: transparent;
+    display: inline-block;
+    width: 460px;
+    height: 100%;
+    margin: 10px;
 }
 
 .nivoSlider {
@@ -423,6 +434,15 @@ article.galerij {
 
 /* extra small devices <768px */
 @media (max-width: 768px) {
+
+    header .title {
+        line-height: 23px;
+    }
+    header .title .logo {
+        margin: 5px;
+        width: 40%;
+    }
+
     .nieuwsteImages img {
         margin-bottom: 15px;
     }

@@ -37,9 +37,10 @@ class AgendaRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('n')
             ->where("n.enabled = :enabled")
-            ->andWhere('n.eventDate >= NOW()')
+            ->andWhere('n.eventDate >= :now')
             ->setParameter('enabled', true)
-            ->orderBy('n.eventDate', 'DESC')
+            ->setParameter('now', strftime('%Y-%m-%d',time()))
+            ->orderBy('n.eventDate', 'ASC')
             ->getQuery()
             ->getResult()
             ;

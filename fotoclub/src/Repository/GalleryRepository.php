@@ -89,7 +89,9 @@ class GalleryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('g')
             ->select('g.id')
+            ->leftJoin('g.member', 'm')
             ->andWhere('g.active = :active')
+            ->andWhere('m.active = :active')
             ->orderBy('RAND()')
             ->setParameter('active', true)
             ->setMaxResults(1)
