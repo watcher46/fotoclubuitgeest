@@ -12,14 +12,14 @@ RUN mkdir -p /export; \
         -keyout /export/server.key -out /export/server.crt
 
 #install php & extensions
-FROM php:7.3-apache
+FROM php:7.4-apache
 LABEL maintainer="watcher46@gmail.com"
 
 RUN apt-get update -y && \
     apt-get install -y unzip libzip-dev libxslt-dev libpq-dev git libpng-dev libjpeg62-turbo-dev libicu-dev  && \
-    docker-php-ext-configure zip --with-libzip && \
+    docker-php-ext-configure zip && \
     docker-php-ext-install pdo xsl pdo_mysql mysqli pdo_pgsql zip opcache intl && \
-    docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-configure gd && \
     docker-php-ext-install gd && \
     docker-php-ext-enable opcache
 
