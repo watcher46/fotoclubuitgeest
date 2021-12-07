@@ -12,7 +12,7 @@ RUN mkdir -p /export; \
         -keyout /export/server.key -out /export/server.crt
 
 #install php & extensions
-FROM php:7.4-apache
+FROM php:8.0-apache
 LABEL maintainer="watcher46@gmail.com"
 
 RUN apt-get update -y && \

@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.28.2",
+    "@babel/helper-compilation-targets": "^7.16.3",
+    "@symfony/webpack-encore": "^1.7.0",
     "webpack-notifier": "^1.8.0"
   },
   "license": "UNLICENSED",
